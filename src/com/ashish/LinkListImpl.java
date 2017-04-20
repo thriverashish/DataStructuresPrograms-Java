@@ -31,7 +31,9 @@ public class LinkListImpl {
 	 */
 	private String dataInNode(){
 		System.out.println("Enter the Data to be entered inside the node");
-		String data = reader.next();
+		reader.nextLine(); // this line is added because without this line the data variable present in next line was taking empty line as input which was given after choosing preferences option
+		String data = reader.nextLine();
+		System.out.println("DATA"+ data);
 		return data;
 	}
 	
@@ -201,7 +203,8 @@ public class LinkListImpl {
 				System.out.println("press 3 to add element at position");
 				System.out.println("press 4 to delete element from position");
 				System.out.println("press 5 to display the contents of Link List");
-				System.out.println("press 6 to Reverse the Link List ");
+				System.out.println("press 6 to Reverse the Link List Iteratively");
+				System.out.println("press 7 to Reverse the Link List using stack");
 				int choice = reader.nextInt();
 				switch(choice){
 					case 1:
@@ -227,6 +230,10 @@ public class LinkListImpl {
 					case 6:
 						this.reverseLL(head);
 						break;
+					case 7:
+						ReverseLinkListUsingStack r = new ReverseLinkListUsingStack();
+						this.head = r.reverse(head);
+						break;
 					default:
 						System.out.println("Wrong Choice, Please fill in the appropriate choice");
 				}
@@ -235,7 +242,7 @@ public class LinkListImpl {
 			}catch(InputMismatchException e) {
 				System.out.println("Please enter the choices/positions as positive Integer, other inputs are not valid");
 				System.out.println("Try Again!");
-				reader.next();
+				reader.next(); // this line is added because of concept of java- In case of exception input mismatch, the mismatched value should be consumed 
 			}
 			System.out.println("\nDo you want to continue (Y/N)");
 			response = reader.next().charAt(0);
