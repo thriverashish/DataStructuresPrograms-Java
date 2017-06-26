@@ -1,5 +1,6 @@
 package com.ashish;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StackImplUsingLinkList {
@@ -58,41 +59,48 @@ public class StackImplUsingLinkList {
 		}
 	}
 	
-	public void numberOfElementsInStack(){
-
+	public void numberOfElementsInStack() {
 		System.out.println("Number Of Elements are : " + this.numberOfElements);
 	}
 	
-	public void execute(){
+	public void execute() {
 		char response;		
 		do {
-			System.out.println("Enter your preference");
-			System.out.println("press 1 push elements into Stack");
-			System.out.println("press 2 to pop elements from Stack");
-			System.out.println("press 3 to display the top element");
-			System.out.println("press 4 to know the number of elements in the Stack");
-			
-			int choice = reader.nextInt();
-			
-			switch(choice){
-				case 1:
-					this.push(this.userInput());
-					break;
-				case 2:
-					this.pop();
-					break;
-				case 3:
-					this.displayTop();
-					break;
-				case 4:
-					this.numberOfElementsInStack();
-					break;
-				default:
-					System.out.println("Wrong Choice, Please fill in the appropriate choice");
-					
+			try {
+				System.out.println("Enter your preference");
+				System.out.println("press 1 push elements into Stack");
+				System.out.println("press 2 to pop elements from Stack");
+				System.out.println("press 3 to display the top element");
+				System.out.println("press 4 to know the number of elements in the Stack");
+				
+				int choice = reader.nextInt();
+				
+				switch(choice){
+					case 1:
+						this.push(this.userInput());
+						break;
+					case 2:
+						this.pop();
+						break;
+					case 3:
+						this.displayTop();
+						break;
+					case 4:
+						this.numberOfElementsInStack();
+						break;
+					default:
+						System.out.println("Wrong Choice, Please fill in the appropriate choice");
+						
+				}
+			}catch(InputMismatchException e) {
+				System.out.println("Please enter the choices/positions as positive Integer, other inputs are not valid");
+				System.out.println("Try Again!");
+				reader.next();
 			}
 			System.out.println("\n Do you want to continue (Y/N)");
 			response = reader.next().charAt(0);
+			if(response !='N' || response !='n' || response !='Y'|| response !='y')
+				System.out.println("Exiting Program since Y/y is not entered");
 		}while(response == 'Y' || response == 'y');
 	}//end of execute
 }
