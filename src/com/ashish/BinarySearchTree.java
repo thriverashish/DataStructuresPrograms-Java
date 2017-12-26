@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class BinarySearchTree {
 	
@@ -45,6 +46,21 @@ public class BinarySearchTree {
 		}
 		return root;
 	}// end of addNode
+	
+	private TreeNode createBSTFromArray(int[] arr, int start, int end) {
+		int mid = 0;
+		TreeNode node = null;
+		
+		if(start > end) {
+			return null;
+		}
+			mid = (start+end)/2;
+			node = new TreeNode(arr[mid]);
+			node.left = createBSTFromArray(arr, start, mid-1); 
+			node.right = createBSTFromArray(arr, mid+1, end);
+		
+		return node;
+	}
 	
 	private TreeNode deleteNode(TreeNode root, int data) {
 		
@@ -134,7 +150,7 @@ private int findMax(TreeNode root) {
 			que.add(root);
 				while(!que.isEmpty()) {
 					current = que.poll();
-					System.out.print(current.data +" ");
+					System.out.print(current.data +" -> ");
 					if(current.left != null)
 						que.add(current.left);
 					if(current.right != null)
@@ -142,7 +158,98 @@ private int findMax(TreeNode root) {
 				}
 		}
 	}//end of levelorderTraversal
-
+	
+	private void InorderTraversalRecursively(TreeNode root) {
+		if(root == null){
+			return;
+		}// end of InorderTraversalRecursively
+		
+		InorderTraversalRecursively(root.left);
+		System.out.print(root.data + " -> ");
+		InorderTraversalRecursively(root.right);
+	}
+	
+	private void InorderTraversalIteratively(TreeNode root) {
+		
+		if(root==null){
+			System.out.println("Empty Tree");
+			return;
+		}
+		Stack<TreeNode> stk = new Stack<TreeNode>();
+		TreeNode current = root;
+		
+		while(current!=null) {
+			stk.push(current);
+			current = current.left;
+		}
+		
+		while(!stk.isEmpty()) {
+			
+			current = stk.pop();
+			System.out.print(current.data+"->");
+			
+			if(current.right!=null) {
+				current = current.right;
+						
+				while(current!=null) {
+					stk.push(current);
+					current = current.left;
+				}
+			}
+		}
+	} //end of InorderTraversalIteratively
+	
+	private void preOrderTaversalRecursively(TreeNode root) {
+		if(root == null){
+			return;
+		} // end of preOrderTaversalRecursively
+		
+		System.out.print(root.data + " -> ");
+		preOrderTaversalRecursively(root.left);
+		preOrderTaversalRecursively(root.right);
+	}
+	
+	private void preOrderTaversalIteratively(TreeNode root) {
+		
+		if(root==null){
+			System.out.println("Empty Tree");
+			return;
+		}
+		Stack<TreeNode> stk = new Stack<TreeNode>();
+		TreeNode current = root;
+		
+		while(current!=null) {
+			System.out.print(current.data+"->");
+			stk.push(current);
+			current = current.left;
+		}
+		
+		while(!stk.isEmpty()) {
+			
+			current = stk.pop();
+			
+			if(current.right!=null) {
+				current = current.right;
+			
+				while(current!=null) {
+					System.out.print(current.data+"->");
+					stk.push(current);
+					current = current.left;
+				}
+			}
+		}
+	}// end of preOrderTaversalIteratively
+	
+	private void postOrderTaversalRecursively(TreeNode root) {
+		if(root == null){
+			return;
+		}
+		
+		postOrderTaversalRecursively(root.left);
+		postOrderTaversalRecursively(root.right);
+		System.out.print(root.data + " -> ");
+	}//end of postOrderTaversalRecursively
+	
 	private void display() {
 		
 	}// end of display
@@ -153,19 +260,29 @@ private int findMax(TreeNode root) {
 		do {
 			try {
 				System.out.println("Enter your preference");
+				System.out.println("press 0 to create a BST from give Array of Numbers");
 				System.out.println("press 1 to add an element into BST");
 				System.out.println("press 2 to delete an element from BST");
 				System.out.println("press 3 for Level Order Traversal of BST");
-				System.out.println("press 4 for Inorder Traversal of BST");
-				System.out.println("press 5 for Preorder Traversal");
-				System.out.println("press 6 for Post Order Traversal");
-				System.out.println("press 7 to Find Min Element in BST");
-				System.out.println("press 8 to Find Max Element in BST");
-				System.out.println("press 9 to Find Height of BST");
-				System.out.println("press 10 Display the Elements of BST");
+				System.out.println("press 4 for Recursive Inorder Traversal of BST");
+				System.out.println("press 5 for Iterative Inorder Traversal of BST");
+				System.out.println("press 6 for Recursive Preorder Traversal");
+				System.out.println("press 7 for Iterative Preorder Traversal");
+				System.out.println("press 8 for Recursive Post Order Traversal");
+				System.out.println("press 9 for Iterative Post Order Traversal");
+				System.out.println("press 10 to Find Min Element in BST");
+				System.out.println("press 11 to Find Max Element in BST");
+				System.out.println("press 12 to Find Height of BST");
+				System.out.println("press 13 Display the Elements of BST");
 
 				int choice = reader.nextInt();
 				switch(choice){
+					case 0:
+						int[] arr = {5,10,15,20,25,30,35};
+						int start = 0;
+						int end = 6;
+						this.root = this.createBSTFromArray(arr, start, end);
+						break;
 					case 1:
 						this.root=addNode(this.root, dataInNode()); //dataInNode is a function which will take value from the user
 						break;
@@ -178,19 +295,19 @@ private int findMax(TreeNode root) {
 						this.levelOrderTraversal(this.root);
 						break;
 					case 4:
-
+						this.InorderTraversalRecursively(root);
 						break;
 					case 5:
-						
+						this.InorderTraversalIteratively(root);
 						break;
 					case 6:
-						
+						this.preOrderTaversalRecursively(root);
 						break;
 					case 7:
-						
+						this.preOrderTaversalIteratively(root);
 						break;
 					case 8:
-						
+						this.postOrderTaversalRecursively(root);
 						break;	
 					case 9:
 						
